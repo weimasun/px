@@ -23,7 +23,7 @@ foreach ($p in $profiles) {
 
     if (-not (Test-Path $p)) { $lines += "SKIP (no profile): $p"; continue }
 
-    # Same filter as install-px.ps1: the loader is two lines (marker line +
+    # Same filter as install-remote.ps1: the loader is two lines (marker line +
     # the 'if (Test-Path "<...>\px.ps1") { . "<...>\px.ps1" }' line), and only
     # the second one mentions px.ps1. Dropping just the marker would leave px
     # loaded after "uninstall".

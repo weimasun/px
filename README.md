@@ -27,10 +27,18 @@ source <(curl -fsSL https://raw.githubusercontent.com/weimasun/px/main/src/px.sh
 px --set 127.0.0.1:7890   # 换成你自己的端口，只存 ~/px/px-proxy.txt，地址没写 `://` 会自动补 `http://`
 ```
 
-试用只在 `~/px` 留下代理地址文件，删掉即可：
+试用的产物只有 `~/px`，删掉即可：
+
+**PowerShell**
+
+```powershell
+Remove-Item -Recurse -Force "$HOME\px"       # 删除缓存文件
+```
+
+**bash / zsh**
 
 ```sh
-rm -rf ~/px
+rm -rf ~/px                                  # 删除缓存文件
 ```
 
 ## 安装

@@ -19,7 +19,12 @@
 # SetEnvironmentVariable API is used instead - it always takes effect.
 
 $script:PxDir = $PSScriptRoot
-if (-not $script:PxDir) { $script:PxDir = Split-Path -Parent $MyInvocation.MyCommand.Path }
+if (-not $script:PxDir) {
+    # Path is $null (not just empty) when piped in with `irm <url> | iex`, and
+    # Split-Path rejects a null Path - check it before calling.
+    $pxSelf = $MyInvocation.MyCommand.Path
+    if ($pxSelf) { $script:PxDir = Split-Path -Parent $pxSelf }
+}
 # Both are empty when this file is piped in with `irm <url> | iex`. Fall back to
 # the same directory install-remote.ps1 uses, so a session-only px still reads
 # and writes the same px-proxy.txt as an installed one.

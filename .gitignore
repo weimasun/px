@@ -1,0 +1,9 @@
+# Local machine state - never commit these.
+px-proxy.txt
+
+# Install / verification / acceptance output.
+*.log
+result.txt
+
+# Editor / agent scratch.
+.workbuddy/

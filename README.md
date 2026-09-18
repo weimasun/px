@@ -4,9 +4,35 @@
 
 它适合临时为 `git`、`npm`、`curl`、`pip`、`cargo` 和 `go` 等命令启用本地 HTTP 代理。支持 Windows PowerShell 5.1/7+，以及 Git Bash、WSL、Linux、macOS 上的 bash/zsh。
 
+## 一行安装（推荐）
+
+不用克隆仓库，直接在目标终端里跑一行：
+
+| 终端 | 命令 |
+| --- | --- |
+| PowerShell 5.1 / 7+ | `irm https://raw.githubusercontent.com/weimasun/px/main/install-remote.ps1 \| iex` |
+| Git Bash / WSL / Linux / macOS | `curl -fsSL https://raw.githubusercontent.com/weimasun/px/main/install-remote.sh \| bash` |
+
+它会把脚本下载到 `~/px`，然后调用正常安装脚本写入你的 profile / shell rc 文件。重跑一次即升级脚本，`px-proxy.txt`（你的代理地址）不会被覆盖。
+
+> [!WARNING]
+> `irm <url> | iex` 和 `curl ... | bash` 会直接执行该地址返回的内容。上面两个脚本各只有几十行，先打开 URL 看一眼再跑。
+
+只想临时用一次、不写进 profile 的话，可以只加载函数本身（仅当前窗口有效）：
+
+```powershell
+irm https://raw.githubusercontent.com/weimasun/px/main/px.ps1 | iex
+```
+
+```sh
+source <(curl -fsSL https://raw.githubusercontent.com/weimasun/px/main/px.sh)
+```
+
+这种用法下 `px` 仍会读写 `~/px/px-proxy.txt`，与安装版共用同一份配置。
+
 ## 快速开始
 
-### 1. 获取项目
+### 1. 获取项目（手动方式）
 
 克隆仓库并进入目录：
 
@@ -126,6 +152,7 @@ bash uninstall-px.sh
 | --- | --- |
 | `px.ps1` | PowerShell 实现，定义 `px` 和 `px-status` |
 | `px.sh` | bash/zsh 实现，适用于 Git Bash、WSL、Linux 和 macOS |
+| `install-remote.ps1` / `install-remote.sh` | 一行安装入口，供 `irm ... \| iex` / `curl ... \| bash` 使用 |
 | `install-px.ps1` / `install-px.sh` | 安装到对应 shell 的启动配置 |
 | `uninstall-px.ps1` / `uninstall-px.sh` | 移除对应 shell 的加载配置 |
 | `verify-px.ps1` | PowerShell 侧的验收脚本 |

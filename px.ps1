@@ -20,6 +20,10 @@
 
 $script:PxDir = $PSScriptRoot
 if (-not $script:PxDir) { $script:PxDir = Split-Path -Parent $MyInvocation.MyCommand.Path }
+# Both are empty when this file is piped in with `irm <url> | iex`. Fall back to
+# the same directory install-remote.ps1 uses, so a session-only px still reads
+# and writes the same px-proxy.txt as an installed one.
+if (-not $script:PxDir) { $script:PxDir = Join-Path $HOME 'px' }
 $script:PxVars        = @('HTTP_PROXY', 'HTTPS_PROXY', 'ALL_PROXY', 'NO_PROXY')
 
 function script:ConvertTo-PxUrl {
@@ -63,6 +67,7 @@ function px {
         # No BOM and no trailing newline: PS 5.1's Set-Content writes a BOM and
         # cmd's "set /p" would keep the CR, both of which break the other shells.
         $cfg = Join-Path $script:PxDir 'px-proxy.txt'
+        if (-not (Test-Path $script:PxDir)) { New-Item -ItemType Directory -Force -Path $script:PxDir | Out-Null }
         [System.IO.File]::WriteAllText($cfg, $u, (New-Object System.Text.UTF8Encoding($false)))
         Write-Host ('px: default proxy set to ' + $u)
         return

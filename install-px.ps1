@@ -1,7 +1,8 @@
 # install-px.ps1 - wire px.ps1 into every PowerShell profile on this machine.
 # ASCII only. Idempotent: safe to re-run.
 #
-#   pwsh.exe -File install-px.ps1
+# Not a user-facing entry point: install-remote.ps1 downloads this file to
+# ~/px and calls it. Run that one-liner instead of running this by hand.
 #
 # What it does:
 #   1. resolves px.ps1 from $PSScriptRoot (no hardcoded absolute path)

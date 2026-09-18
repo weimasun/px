@@ -1,6 +1,6 @@
 # uninstall-px.ps1 - remove the px loader and fallback copy from every profile.
 # ASCII only. Does NOT delete the px.ps1 in this folder (the source of truth).
-# Usage: pwsh.exe -File uninstall-px.ps1
+# Usage: pwsh.exe -File "$HOME\px\uninstall-px.ps1"
 
 $marker = '# px - single-command proxy prefix'
 $log    = Join-Path $PSScriptRoot '_uninstall.log'

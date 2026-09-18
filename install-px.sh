@@ -3,7 +3,8 @@
 # Run it from INSIDE the shell you want to install into, so the path is
 # written in that shell's own form (/c/... for Git Bash, /mnt/c/... for WSL).
 #
-#   bash install-px.sh
+# Not a user-facing entry point: install-remote.sh downloads this file to
+# ~/px and calls it. Run that one-liner instead of running this by hand.
 #
 # Idempotent: re-running replaces the old block instead of appending.
 

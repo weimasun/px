@@ -2,7 +2,7 @@
 # uninstall-px.sh - remove the px block from shell rc files.
 # Git Bash / WSL / Linux / macOS. Run from INSIDE the shell you installed into.
 #
-#   bash uninstall-px.sh
+#   bash ~/px/uninstall-px.sh
 #
 # Idempotent: safe to run when nothing is installed.
 # Does NOT delete px.sh or this folder - remove them manually if you are done.

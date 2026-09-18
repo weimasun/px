@@ -39,7 +39,14 @@ _px_default() {
     return 1
 }
 
-# WSL2 runs in a VM: 127.0.0.1 is the VM itself, not the Windows host.
+# Rewrite 127.0.0.1 to the Windows host address, but ONLY under WSL2 NAT mode.
+#
+# NAT mode (the old WSL2 default) runs WSL in its own VM, so 127.0.0.1 there is
+# the VM rather than the Windows host running the proxy - the address has to be
+# rewritten. Mirrored mode (WSL 2.0+, now the default) shares the host's
+# loopback, so 127.0.0.1 is already right and rewriting it sends traffic to the
+# LAN router instead. wslinfo tells the two apart; on builds without it, keep
+# the previous rewrite so nothing regresses.
 _px_wsl_fix() {
     case "$(uname -r 2>/dev/null)" in
         *[Mm]icrosoft*|*WSL*) ;;
@@ -49,6 +56,9 @@ _px_wsl_fix() {
         *127.0.0.1*|*localhost*) ;;
         *) printf '%s' "$1"; return 0 ;;
     esac
+    if command -v wslinfo >/dev/null 2>&1; then
+        [ "$(wslinfo --networking-mode 2>/dev/null)" = nat ] || { printf '%s' "$1"; return 0; }
+    fi
     _px_ip=${PX_WSL_HOST_IP:-$(ip route show default 2>/dev/null | awk '{print $3; exit}')}
     if [ -z "$_px_ip" ]; then printf '%s' "$1"; return 0; fi
     printf '%s' "$1" | sed "s/127\.0\.0\.1/$_px_ip/g; s/localhost/$_px_ip/g"

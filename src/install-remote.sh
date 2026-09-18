@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # install-remote.sh - one-shot installer, meant to be piped straight into bash:
 #
-#   curl -fsSL https://raw.githubusercontent.com/weimasun/px/main/install-remote.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/weimasun/px/main/src/install-remote.sh | bash
 #
 # Git Bash / WSL / Linux / macOS. It downloads the px files into ~/px and then
 # runs install-px.sh from there, which sources px.sh from your rc file.
@@ -13,7 +13,9 @@
 
 set -eu
 
-repo='https://raw.githubusercontent.com/weimasun/px/main'
+# Scripts live in src/ in the repo, but they are installed flat into ~/px so
+# that px.sh, px-proxy.txt and the installers all sit in one directory.
+repo='https://raw.githubusercontent.com/weimasun/px/main/src'
 dir="$HOME/px"
 
 mkdir -p "$dir"

@@ -1,6 +1,6 @@
 # install-remote.ps1 - one-shot installer, meant to be piped straight into iex:
 #
-#   irm https://raw.githubusercontent.com/weimasun/px/main/install-remote.ps1 | iex
+#   irm https://raw.githubusercontent.com/weimasun/px/main/src/install-remote.ps1 | iex
 #
 # ASCII only: Windows PowerShell 5.1 parses BOM-less .ps1 files as ANSI (GBK).
 #
@@ -17,7 +17,9 @@ $ErrorActionPreference = 'Stop'
 # GitHub raw requires TLS 1.2; old Windows builds default to something weaker.
 try { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 } catch { }
 
-$repo  = 'https://raw.githubusercontent.com/weimasun/px/main'
+# Scripts live in src/ in the repo, but they are installed flat into ~/px so
+# that px.ps1, px-proxy.txt and the installers all sit in one directory.
+$repo  = 'https://raw.githubusercontent.com/weimasun/px/main/src'
 $dir   = Join-Path $HOME 'px'
 $files = @(
     'px.ps1', 'install-px.ps1', 'uninstall-px.ps1', 'verify-px.ps1',

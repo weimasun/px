@@ -10,10 +10,10 @@
 
 | 终端 | 命令 |
 | --- | --- |
-| PowerShell 5.1 / 7+ | `irm https://raw.githubusercontent.com/weimasun/px/main/install-remote.ps1 \| iex` |
-| Git Bash / WSL / Linux / macOS | `curl -fsSL https://raw.githubusercontent.com/weimasun/px/main/install-remote.sh \| bash` |
+| PowerShell 5.1 / 7+ | `irm https://raw.githubusercontent.com/weimasun/px/main/src/install-remote.ps1 \| iex` |
+| Git Bash / WSL / Linux / macOS | `curl -fsSL https://raw.githubusercontent.com/weimasun/px/main/src/install-remote.sh \| bash` |
 
-它会把脚本下载到 `~/px`，然后把加载语句写进你的 PowerShell profile / shell rc 文件。重跑同一行即升级脚本，`px-proxy.txt`（你的代理地址）不会被覆盖。
+它会把脚本下载到 `~/px`（仓库里放在 `src/`，装到本地是平铺的），然后把加载语句写进你的 PowerShell profile / shell rc 文件。重跑同一行即升级脚本，`px-proxy.txt`（你的代理地址）不会被覆盖。
 
 每种终端各装各的：PowerShell 只认 profile，Git Bash 和 WSL 各自有自己的 `~/.bashrc`，路径格式也不同（`/c/...` 与 `/mnt/c/...`）。装完重开一个终端生效，或按安装脚本输出的命令手动加载一次。
 
@@ -23,11 +23,11 @@
 只想临时用一次、不写进 profile 的话，可以只加载函数本身（仅当前窗口有效）：
 
 ```powershell
-irm https://raw.githubusercontent.com/weimasun/px/main/px.ps1 | iex
+irm https://raw.githubusercontent.com/weimasun/px/main/src/px.ps1 | iex
 ```
 
 ```sh
-source <(curl -fsSL https://raw.githubusercontent.com/weimasun/px/main/px.sh)
+source <(curl -fsSL https://raw.githubusercontent.com/weimasun/px/main/src/px.sh)
 ```
 
 这种用法下 `px` 仍会读写 `~/px/px-proxy.txt`，与安装版共用同一份配置。
@@ -124,14 +124,16 @@ rm -rf ~/px
 
 ## 文件说明
 
+脚本都在 `src/` 下，安装后平铺到 `~/px`：
+
 | 文件 | 说明 |
 | --- | --- |
-| `install-remote.ps1` / `install-remote.sh` | 安装入口，供 `irm ... \| iex` / `curl ... \| bash` 使用 |
-| `px.ps1` | PowerShell 实现，定义 `px` 和 `px-status` |
-| `px.sh` | bash/zsh 实现，适用于 Git Bash、WSL、Linux 和 macOS |
-| `install-px.ps1` / `install-px.sh` | 写入 shell 启动配置，由安装入口调用 |
-| `uninstall-px.ps1` / `uninstall-px.sh` | 移除对应 shell 的加载配置 |
-| `verify-px.ps1` | PowerShell 侧的验收脚本 |
+| `src/install-remote.ps1` / `src/install-remote.sh` | 安装入口，供 `irm ... \| iex` / `curl ... \| bash` 使用 |
+| `src/px.ps1` | PowerShell 实现，定义 `px` 和 `px-status` |
+| `src/px.sh` | bash/zsh 实现，适用于 Git Bash、WSL、Linux 和 macOS |
+| `src/install-px.ps1` / `src/install-px.sh` | 写入 shell 启动配置，由安装入口调用 |
+| `src/uninstall-px.ps1` / `src/uninstall-px.sh` | 移除对应 shell 的加载配置 |
+| `src/verify-px.ps1` | PowerShell 侧的验收脚本 |
 | `px-proxy.txt` | 可由 `px --set` 更新的默认代理地址（本地生成，不入库） |
 
 ## 许可证
